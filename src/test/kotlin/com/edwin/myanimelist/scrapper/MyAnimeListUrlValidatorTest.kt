@@ -43,8 +43,14 @@ class MyAnimeListUrlValidatorTest {
     @Test
     fun isAnimePage_ValidUrl_TrueReturned() {
         assertTrue("Anime homepage must be valid", myAnimeListUrlValidator.isAnimePage("https://myanimelist.net/anime/35760/Shingeki_no_Kyojin_Season_3"))
-        assertTrue("Anime homepage with a question mark in their must be valid", myAnimeListUrlValidator.isAnimePage("https://myanimelist.net/anime/36475/Sword_Art_Online_Alternative__Gun_Gale_Online?suggestion"))
+
         assertTrue("Anime homepage with an underscore name in their must be valid", myAnimeListUrlValidator.isAnimePage("https://myanimelist.net/anime/31765/Sword_Art_Online_Movie__Ordinal_Scale"))
+
+    }
+
+    @Test
+    fun isAnimePage_InvalidUrl_FalseReturned() {
+        assertFalse("Anime homepage with a question mark in their must not be valid", myAnimeListUrlValidator.isAnimePage("https://myanimelist.net/anime/36475/Sword_Art_Online_Alternative__Gun_Gale_Online?suggestion"))
     }
 
 }

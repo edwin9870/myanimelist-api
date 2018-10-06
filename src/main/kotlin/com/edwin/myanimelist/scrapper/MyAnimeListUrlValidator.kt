@@ -17,7 +17,7 @@ class MyAnimeListUrlValidator {
     }
 
     fun isAnimePage(url: String): Boolean {
-        val regexToMatch = Regex("^https:\\/\\/myanimelist.net\\/anime\\/\\d+\\/[^\\/]+$", RegexOption.IGNORE_CASE)
+        val regexToMatch = Regex("^https:\\/\\/myanimelist.net\\/anime\\/\\d+\\/[^\\/]+(?<!\\?suggestion)\$", RegexOption.IGNORE_CASE)
         if (regexToMatch.matches(url.toLowerCase())) {
             return true
         }
