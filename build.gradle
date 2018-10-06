@@ -47,10 +47,16 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
 
+    //Test
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
+
     //Crawler and scraper dependencies
     implementation 'edu.uci.ics:crawler4j:4.4.0'
     implementation 'org.jsoup:jsoup:1.11.3'
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
+    //MongoDB
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$spring_boot_version"
+
+
 }
 
