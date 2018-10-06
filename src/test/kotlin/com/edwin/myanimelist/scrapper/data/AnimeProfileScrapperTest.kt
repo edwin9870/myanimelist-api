@@ -34,7 +34,7 @@ class AnimeProfileScrapperTest {
     @Test
     fun getTitle_InvalidAnimeTitle_MustGetFalse() {
         val title = animeProfileScrapper.getTitle(htmlContent)
-        assertNotEquals("Anime's title must be invalid", "xdfckjksa", title)
+        assertNotEquals("AnimeEntity's title must be invalid", "xdfckjksa", title)
     }
 
     @Test
