@@ -48,7 +48,7 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
             val links = htmlParseData.outgoingUrls
 
             if(animeListUrlValidator.isAnimePage(url)) {
-                val myAnimeListId: Int = animeProfileScrapper.getMyAnimeListIdFromUrl(url)
+                val myAnimeListId: Int = animeProfileScrapper.getMyAnimeListId(url)
                 val name = animeProfileScrapper.getTitle(html)
                 val synopsis = animeProfileScrapper.getSynopsis(html)
                 val episodesNumber = animeProfileScrapper.getEpisodesNumber(html)
