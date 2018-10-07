@@ -53,4 +53,15 @@ class MyAnimeListUrlValidatorTest {
         assertFalse("Anime homepage with a question mark in their must not be valid", myAnimeListUrlValidator.isAnimePage("https://myanimelist.net/anime/36475/Sword_Art_Online_Alternative__Gun_Gale_Online?suggestion"))
     }
 
+
+    @Test
+    fun isAnimeImagesPage_ValidUrl_TrueReturned() {
+        assertTrue("Anime pics must be valid", myAnimeListUrlValidator.isAnimeImagesPage("https://myanimelist.net/anime/34096/Gintama/pics"))
+    }
+
+    @Test
+    fun isAnimeImagesPage_InvalidUrl_FalseReturned() {
+        assertFalse("Different Anime pics's url must not be valid", myAnimeListUrlValidator.isAnimeImagesPage("https://myanimelist.net/anime/36475/Sword_Art_Online_Alternative__Gun_Gale_Online?suggestion"))
+    }
+
 }

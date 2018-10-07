@@ -12,7 +12,6 @@ class MyAnimeListUrlValidator {
             return true
         }
 
-
         return false
     }
 
@@ -21,6 +20,16 @@ class MyAnimeListUrlValidator {
         if (regexToMatch.matches(url.toLowerCase())) {
             return true
         }
+
+        return false
+    }
+
+    fun isAnimeImagesPage(url: String): Boolean {
+        val regexToMatch = Regex("^https:\\/\\/myanimelist.net\\/anime\\/\\d+\\/[^\\/]+\\/pics\$", RegexOption.IGNORE_CASE)
+        if (regexToMatch.matches(url.toLowerCase())) {
+            return true
+        }
+
         return false
     }
 
