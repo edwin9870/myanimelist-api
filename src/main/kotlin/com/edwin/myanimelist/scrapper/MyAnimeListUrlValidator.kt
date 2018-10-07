@@ -38,10 +38,13 @@ class MyAnimeListUrlValidator {
         return false
     }
 
-    fun getMyAnimeListIdFromUrl(url: String): Int? {
+    fun getMyAnimeListIdFromUrl(url: String): Int {
         val regexValue: String? = "^https:\\/\\/myanimelist.net\\/anime\\/(\\d+)".toRegex().find(url)?.groupValues?.get(1)
         logger.debug("regexValue: $regexValue")
-        return regexValue?.toInt()
+        if(regexValue == null) {
+            throw IllegalStateException("Invalid URL")
+        }
+        return regexValue.toInt()
     }
 
 }

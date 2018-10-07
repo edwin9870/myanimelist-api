@@ -34,7 +34,8 @@ class AnimeServiceTest {
 
             Mockito.`when`(animeRepository.findByName("Goku")).thenReturn(null)
             val mockAnimeResponse = Anime(
-                    "ajkskajsk",
+                    null,
+                    1,
                     "Boruto",
                     "The Naruto's son",
                     "https://myanimelist.net/anime/34566/Boruto__Naruto_Next_Generations",
@@ -49,7 +50,7 @@ class AnimeServiceTest {
 
     @Test
     fun create_NoExistingAnime_GetTrue() {
-        val anime = AnimeDto("Goku", "The best",
+        val anime = AnimeDto(1,"Goku", "The best",
                 "https://myanimelist.net/anime/1212/Goku_test",
                 1,
                 false,
@@ -62,7 +63,9 @@ class AnimeServiceTest {
 
     @Test(expected = EntityExistsException::class)
     fun createExistingAnime_GetException() {
-        animeService.create(AnimeDto("Boruto",
+        animeService.create(AnimeDto(
+                1,
+                "Boruto",
                 "The Naruto's son",
                 "https://myanimelist.net/anime/34566/Boruto__Naruto_Next_Generations",
                 1,

@@ -48,6 +48,7 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
             val links = htmlParseData.outgoingUrls
 
             if(animeListUrlValidator.isAnimePage(url)) {
+                val myAnimeListId: Int = animeListUrlValidator.getMyAnimeListIdFromUrl(url)
                 val name = animeProfileScrapper.getTitle(html)
                 val synopsis = animeProfileScrapper.getSynopsis(html)
                 val episodesNumber = animeProfileScrapper.getEpisodesNumber(html)
@@ -55,7 +56,7 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
                 val animeReleaseDate = animeProfileScrapper.getAnimeReleaseDate(html)
                 val animeEndDate = animeProfileScrapper.getAnimeEndDate(html)
 
-                val anime = AnimeDto(name, synopsis, url, episodesNumber, onAiring, animeReleaseDate, animeEndDate)
+                val anime = AnimeDto(myAnimeListId, name, synopsis, url, episodesNumber, onAiring, animeReleaseDate, animeEndDate)
                 logger.debug("Anime to save: $anime")
 
                 try {

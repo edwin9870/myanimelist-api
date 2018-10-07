@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id
 import java.time.LocalDate
 
 data class Anime(@Id val id: String?,
+                 val myAnimeListId: Int,
                  val name: String,
                  val synopsis: String,
                  val myAnimelistUrl: String,

@@ -69,9 +69,9 @@ class MyAnimeListUrlValidatorTest {
         assertEquals("Id is not valid", 34096, myAnimeListUrlValidator.getMyAnimeListIdFromUrl("https://myanimelist.net/anime/34096/Gintama/pics"))
     }
 
-    @Test
+    @Test(expected = IllegalStateException::class)
     fun getMyAnimeListIdFromUrl_SendInvalidUrl_GetNull() {
-        assertNull("Url is invalid, method must return null", myAnimeListUrlValidator.getMyAnimeListIdFromUrl("https://myanimelist.net/anime/34096/Gintama/pics"))
+        assertNull("Url is invalid, method must throw a exception", myAnimeListUrlValidator.getMyAnimeListIdFromUrl("wskdjksjdksd"))
     }
 
 }
