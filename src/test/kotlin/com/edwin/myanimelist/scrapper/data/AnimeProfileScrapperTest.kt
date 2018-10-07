@@ -93,5 +93,14 @@ class AnimeProfileScrapperTest {
         assertEquals("End day is invalid", 4, releaseDate?.dayOfMonth)
     }
 
+    @Test
+    fun getMyAnimeListIdFromUrl_SendValidUrl_GetId() {
+        assertEquals("Id is not valid", 34096, animeProfileScrapper.getMyAnimeListIdFromUrl("https://myanimelist.net/anime/34096/Gintama/pics"))
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun getMyAnimeListIdFromUrl_SendInvalidUrl_GetNull() {
+        assertNull("Url is invalid, method must throw a exception", animeProfileScrapper.getMyAnimeListIdFromUrl("wskdjksjdksd"))
+    }
 
 }
