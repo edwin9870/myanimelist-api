@@ -9,3 +9,7 @@ fun String.trimEachNewLine(): String {
     }
     return trimmedLines.trim().toString()
 }
+
+fun String.stripHtml(): String {
+    return this.replace("\\\\<[^>]*>".toRegex(), "")
+}
