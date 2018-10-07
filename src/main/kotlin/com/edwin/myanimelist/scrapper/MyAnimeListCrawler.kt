@@ -24,11 +24,9 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
         }
 
         val url = webURL.url.toLowerCase()
-        if (animeListUrlValidator.isAnimePage(url)) {
-            return true
-        }
-
-        if (animeListUrlValidator.isAnimeListPage(url)) {
+        if (animeListUrlValidator.isAnimePage(url) ||
+                animeListUrlValidator.isAnimeListPage(url) ||
+                animeListUrlValidator.isAnimeImagesPage(url)) {
             return true
         }
 

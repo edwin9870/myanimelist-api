@@ -64,4 +64,14 @@ class MyAnimeListUrlValidatorTest {
         assertFalse("Different Anime pics's url must not be valid", myAnimeListUrlValidator.isAnimeImagesPage("https://myanimelist.net/anime/36475/Sword_Art_Online_Alternative__Gun_Gale_Online?suggestion"))
     }
 
+    @Test
+    fun getMyAnimeListIdFromUrl_SendValidUrl_GetId() {
+        assertEquals("Id is not valid", 34096, myAnimeListUrlValidator.getMyAnimeListIdFromUrl("https://myanimelist.net/anime/34096/Gintama/pics"))
+    }
+
+    @Test
+    fun getMyAnimeListIdFromUrl_SendInvalidUrl_GetNull() {
+        assertNull("Url is invalid, method must return null", myAnimeListUrlValidator.getMyAnimeListIdFromUrl("https://myanimelist.net/anime/34096/Gintama/pics"))
+    }
+
 }

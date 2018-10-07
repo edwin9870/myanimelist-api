@@ -1,9 +1,14 @@
 package com.edwin.myanimelist.scrapper
 
+import com.edwin.myanimelist.scrapper.data.AnimeProfileScrapper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
 class MyAnimeListUrlValidator {
+
+    private val logger: Logger = LoggerFactory.getLogger(MyAnimeListUrlValidator::class.java)
 
     fun isAnimeListPage(url: String): Boolean {
 
@@ -31,6 +36,12 @@ class MyAnimeListUrlValidator {
         }
 
         return false
+    }
+
+    fun getMyAnimeListIdFromUrl(url: String): Int? {
+        val regexValue: String? = "^https:\\/\\/myanimelist.net\\/anime\\/(\\d+)".toRegex().find(url)?.groupValues?.get(1)
+        logger.debug("regexValue: $regexValue")
+        return regexValue?.toInt()
     }
 
 }
