@@ -1,7 +1,7 @@
 package com.edwin.myanimelist.services
 
 import com.edwin.myanimelist.data.dto.AnimeDto
-import com.edwin.myanimelist.data.entities.AnimeEntity
+import com.edwin.myanimelist.data.entities.Anime
 import com.edwin.myanimelist.data.repositories.AnimeRepository
 import com.edwin.myanimelist.exceptions.EntityExistsException
 import org.junit.Assert.assertTrue
@@ -32,7 +32,7 @@ class AnimeServiceTest {
             animeService.animeRepository = animeRepository
 
             Mockito.`when`(animeRepository.findByName("Goku")).thenReturn(null)
-            Mockito.`when`(animeRepository.findByName("Boruto")).thenReturn(AnimeEntity("ajkskajsk", "Boruto", "The Naruto's son"))
+            Mockito.`when`(animeRepository.findByName("Boruto")).thenReturn(Anime("ajkskajsk", "Boruto", "The Naruto's son"))
             initialized = true
         }
     }
