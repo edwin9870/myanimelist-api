@@ -11,5 +11,5 @@ fun String.trimEachNewLine(): String {
 }
 
 fun String.stripHtml(): String {
-    return this.replace("\\\\<[^>]*>".toRegex(), "")
+    return this.replace("<[^>]*>".toRegex(), "")
 }
