@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.time.Month
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -45,7 +46,7 @@ class AnimeProfileScrapperTest {
     @Test
     fun getEpisodesNumber_GetNumberOfEpisodes_GetNumberOfEpisodes() {
         val episodesNumber = animeProfileScrapper.getEpisodesNumber(htmlContent)
-        assertTrue("The number of episode must be equal to 64", episodesNumber.toInt() == 64 )
+        assertTrue("The number of episode must be equal to 64", episodesNumber.toInt() == 64)
     }
 
     @Test
@@ -57,13 +58,22 @@ class AnimeProfileScrapperTest {
     @Test
     fun isOnAiring_GetAiringAnimeStatus_GetTrue() {
         val onAiring = animeProfileScrapper.isOnAiring(htmlContent)
-        if(onAiring == null) {
+        if (onAiring == null) {
             fail("Couldn't get on airing value")
             return
         }
         assertFalse("This anime must not be on airing", onAiring)
     }
 
+    @Test
+    fun getAnimeReleaseDate_GetReleaseDateFromValidContent_GetReleaseDate() {
+        val releaseDate = animeProfileScrapper.getAnimeReleaseDate(htmlContent)
+
+        assertNotNull("Release date must not be null", releaseDate)
+        assertEquals("Release year is invalid", 2009, releaseDate?.year)
+        assertEquals("Release month is invalid", Month.APRIL, releaseDate?.month)
+        assertEquals("Release day is invalid", 5, releaseDate?.dayOfMonth)
+    }
 
 
 }

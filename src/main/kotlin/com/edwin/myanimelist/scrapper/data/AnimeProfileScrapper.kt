@@ -7,7 +7,11 @@ import org.jsoup.nodes.Document
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 import java.util.*
+import java.time.format.DateTimeFormatter
+
+
 
 @Component
 class AnimeProfileScrapper {
@@ -48,15 +52,26 @@ class AnimeProfileScrapper {
         val animeStatusString = document.select("#content > table > tbody div span:containsOwn(tatus:)")?.parents()?.first()?.text()
         logger.debug("animeStatusString: $animeStatusString")
 
-        if(animeStatusString == null) {
+        if (animeStatusString == null) {
             return null
         }
 
         return !animeStatusString.contains("finished airing", true)
     }
 
-    fun getAnimeReleaseDate(htmlContent: String): Date {
-        TODO()
+    fun getAnimeReleaseDate(htmlContent: String): LocalDate? {
+        val document = Jsoup.parse(htmlContent)
+        var animeReleaseDateString: String? = document.select("#content > table > tbody div span:containsOwn(ired:)")?.parents()?.first()?.text()
+        animeReleaseDateString ?: return null
+
+        animeReleaseDateString = animeReleaseDateString.split("to")[0].replace("^[^:]+: ".toRegex(), "").trim()
+        logger.debug("animeAiredString: $animeReleaseDateString")
+
+        val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
+
+        val animeReleaseDate = LocalDate.parse(animeReleaseDateString, formatter)
+        logger.debug("Release date: $animeReleaseDate")
+        return animeReleaseDate
     }
 
     fun getAnimeEndDate(htmlContent: String): Date {
