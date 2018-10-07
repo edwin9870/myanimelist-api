@@ -1,7 +1,6 @@
 package com.edwin.myanimelist.scrapper.data
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,6 +40,18 @@ class AnimeProfileScrapperTest {
     fun getSynopsis_GetValidSummary_MustGetTrue() {
         val synopsis = animeProfileScrapper.getSynopsis(htmlContent)
         assertEquals("Invalid anime's summary", animeSynopsis, synopsis)
+    }
+
+    @Test
+    fun getEpisodesNumber_GetNumberOfEpisodes_GetNumberOfEpisodes() {
+        val episodesNumber = animeProfileScrapper.getEpisodesNumber(htmlContent)
+        assertTrue("The number of episode must be equal to 64", episodesNumber.toInt() == 64 )
+    }
+
+    @Test
+    fun getEpisodesNumber_InvalidHtmlContent_GetMinusOne() {
+        val episodesNumber = animeProfileScrapper.getEpisodesNumber("xksjdkskdaskdj")
+        assertTrue("The number of episode must be equal to -1", episodesNumber.toInt() == -1)
     }
 
 
