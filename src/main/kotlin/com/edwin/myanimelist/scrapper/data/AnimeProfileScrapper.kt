@@ -8,7 +8,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.util.*
 import java.time.format.DateTimeFormatter
 
 
@@ -17,6 +16,7 @@ import java.time.format.DateTimeFormatter
 class AnimeProfileScrapper {
 
     private val logger: Logger = LoggerFactory.getLogger(AnimeProfileScrapper::class.java)
+    private val myAnimeListDateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
 
     fun getTitle(htmlContent: String): String {
         val document: Document = Jsoup.parse(htmlContent)
@@ -65,17 +65,28 @@ class AnimeProfileScrapper {
         animeReleaseDateString ?: return null
 
         animeReleaseDateString = animeReleaseDateString.split("to")[0].replace("^[^:]+: ".toRegex(), "").trim()
-        logger.debug("animeAiredString: $animeReleaseDateString")
+        logger.debug("animeReleaseDateString: $animeReleaseDateString")
 
-        val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
 
-        val animeReleaseDate = LocalDate.parse(animeReleaseDateString, formatter)
+
+        val animeReleaseDate = LocalDate.parse(animeReleaseDateString, myAnimeListDateFormatter)
         logger.debug("Release date: $animeReleaseDate")
         return animeReleaseDate
     }
 
-    fun getAnimeEndDate(htmlContent: String): Date {
-        TODO()
+    fun getAnimeEndDate(htmlContent: String): LocalDate? {
+        val document = Jsoup.parse(htmlContent)
+        var animeEndDateString: String? = document.select("#content > table > tbody div span:containsOwn(ired:)")?.parents()?.first()?.text()
+        animeEndDateString ?: return null
+
+        animeEndDateString = animeEndDateString.split("to")[1].trim()
+        logger.debug("animeEndDateString: $animeEndDateString")
+
+
+
+        val animeReleaseDate = LocalDate.parse(animeEndDateString, myAnimeListDateFormatter)
+        logger.debug("End date: $animeReleaseDate")
+        return animeReleaseDate
     }
 
 }

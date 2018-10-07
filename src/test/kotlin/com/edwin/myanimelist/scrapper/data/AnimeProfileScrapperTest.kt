@@ -75,5 +75,23 @@ class AnimeProfileScrapperTest {
         assertEquals("Release day is invalid", 5, releaseDate?.dayOfMonth)
     }
 
+    @Test
+    fun getAnimeReleaseDate_SendEmptyContent_GetNullResponse() {
+        val releaseDate = animeProfileScrapper.getAnimeReleaseDate("lkdslkdlsd")
+
+        assertNull("Release date must be null", releaseDate)
+    }
+
+
+    @Test
+    fun getAnimeEndDate_GetReleaseEndFromValidContent_GetEndDate() {
+        val releaseDate = animeProfileScrapper.getAnimeEndDate(htmlContent)
+
+        assertNotNull("End date must not be null", releaseDate)
+        assertEquals("End year is invalid", 2010, releaseDate?.year)
+        assertEquals("End month is invalid", Month.JULY, releaseDate?.month)
+        assertEquals("End day is invalid", 4, releaseDate?.dayOfMonth)
+    }
+
 
 }

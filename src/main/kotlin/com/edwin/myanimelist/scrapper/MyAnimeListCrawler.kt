@@ -54,8 +54,10 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
                 val synopsis = animeProfileScrapper.getSynopsis(html)
                 val episodesNumber = animeProfileScrapper.getEpisodesNumber(html)
                 val onAiring = animeProfileScrapper.isOnAiring(html)
+                val animeReleaseDate = animeProfileScrapper.getAnimeReleaseDate(html)
+                val animeEndDate = animeProfileScrapper.getAnimeEndDate(html)
 
-                val anime = AnimeDto(name, synopsis, url, episodesNumber, onAiring)
+                val anime = AnimeDto(name, synopsis, url, episodesNumber, onAiring, animeReleaseDate, animeEndDate)
                 logger.debug("Anime to save: $anime")
 
                 try {
