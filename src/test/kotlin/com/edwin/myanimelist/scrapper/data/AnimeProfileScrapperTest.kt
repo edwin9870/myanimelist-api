@@ -54,6 +54,16 @@ class AnimeProfileScrapperTest {
         assertTrue("The number of episode must be equal to -1", episodesNumber.toInt() == -1)
     }
 
+    @Test
+    fun isOnAiring_GetAiringAnimeStatus_GetTrue() {
+        val onAiring = animeProfileScrapper.isOnAiring(htmlContent)
+        if(onAiring == null) {
+            fail("Couldn't get on airing value")
+            return
+        }
+        assertFalse("This anime must not be on airing", onAiring)
+    }
+
 
 
 }

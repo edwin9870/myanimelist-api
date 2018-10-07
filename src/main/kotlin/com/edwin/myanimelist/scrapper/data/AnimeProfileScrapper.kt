@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class AnimeProfileScrapper {
@@ -40,6 +41,26 @@ class AnimeProfileScrapper {
         }
 
         return episodeString.replace("[^\\d]+".toRegex(), "").toShort()
+    }
+
+    fun isOnAiring(htmlContent: String): Boolean? {
+        val document = Jsoup.parse(htmlContent)
+        val animeStatusString = document.select("#content > table > tbody div span:containsOwn(tatus:)")?.parents()?.first()?.text()
+        logger.debug("animeStatusString: $animeStatusString")
+
+        if(animeStatusString == null) {
+            return null
+        }
+
+        return !animeStatusString.contains("finished airing", true)
+    }
+
+    fun getAnimeReleaseDate(htmlContent: String): Date {
+        TODO()
+    }
+
+    fun getAnimeEndDate(htmlContent: String): Date {
+        TODO()
     }
 
 }
