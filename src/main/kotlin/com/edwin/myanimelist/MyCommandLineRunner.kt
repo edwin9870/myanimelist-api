@@ -21,7 +21,7 @@ class MyCommandLineRunner constructor(private var myAnimeListCrawlerControllerFa
     override fun run(vararg args: String?) {
         logger.info("Start....")
 
-        val crawlStorageFolder = "C:\\Users\\erv-2\\Downloads\\craw"
+        val crawlStorageFolder = "D:\\Downloads\\craw"
         val numberOfCrawlers = 7
 
         val config = CrawlConfig()
