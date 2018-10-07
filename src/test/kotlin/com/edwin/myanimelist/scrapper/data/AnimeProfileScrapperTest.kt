@@ -1,0 +1,48 @@
+package com.edwin.myanimelist.scrapper.data
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.junit4.SpringRunner
+
+@RunWith(SpringRunner::class)
+@SpringBootTest
+@ActiveProfiles("test")
+class AnimeProfileScrapperTest {
+
+    val htmlContent: String = AnimeProfileScrapperTest::class.java.getResource("/HTML/Fullmetal Alchemist_ Brotherhood - MyAnimeList.net.html").readText()
+    val animeTitle: String = "Fullmetal Alchemist: Brotherhood"
+    val animeSynopsis: String = "\"In order for something to be obtained, something of equal value must be lost.\"\n" +
+            "\n" +
+            "Alchemy is bound by this Law of Equivalent Exchange—something the young brothers Edward and Alphonse Elric only realize after attempting human transmutation: the one forbidden act of alchemy. They pay a terrible price for their transgression—Edward loses his left leg, Alphonse his physical body. It is only by the desperate sacrifice of Edward's right arm that he is able to affix Alphonse's soul to a suit of armor. Devastated and alone, it is the hope that they would both eventually return to their original bodies that gives Edward the inspiration to obtain metal limbs called \"automail\" and become a state alchemist, the Fullmetal Alchemist.\n" +
+            "\n" +
+            "Three years of searching later, the brothers seek the Philosopher's Stone, a mythical relic that allows an alchemist to overcome the Law of Equivalent Exchange. Even with military allies Colonel Roy Mustang, Lieutenant Riza Hawkeye, and Lieutenant Colonel Maes Hughes on their side, the brothers find themselves caught up in a nationwide conspiracy that leads them not only to the true nature of the elusive Philosopher's Stone, but their country's murky history as well. In between finding a serial killer and racing against time, Edward and Alphonse must ask themselves if what they are doing will make them human again... or take away their humanity."
+
+    @Autowired
+    lateinit var animeProfileScrapper: AnimeProfileScrapper;
+
+    @Test
+    fun getTitle_ValidAnimeTitle_MustGetTrue() {
+        val title = animeProfileScrapper.getTitle(htmlContent)
+        assertEquals("Invalid anime's title", animeTitle, title)
+    }
+
+    @Test
+    fun getTitle_InvalidAnimeTitle_MustGetFalse() {
+        val title = animeProfileScrapper.getTitle(htmlContent)
+        assertNotEquals("Anime's title must be invalid", "xdfckjksa", title)
+    }
+
+    @Test
+    fun getSynopsis_GetValidSummary_MustGetTrue() {
+        val synopsis = animeProfileScrapper.getSynopsis(htmlContent)
+        assertEquals("Invalid anime's summary", animeSynopsis, synopsis)
+    }
+
+
+
+}
