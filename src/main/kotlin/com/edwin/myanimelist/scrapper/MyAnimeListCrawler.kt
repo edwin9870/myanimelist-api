@@ -43,11 +43,9 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
         logger.debug("Page to visit: {}", url)
         if (page.parseData is HtmlParseData) {
             val htmlParseData = page.parseData as HtmlParseData
-            val text = htmlParseData.text
             val html = htmlParseData.html
-            val links = htmlParseData.outgoingUrls
 
-            if(animeListUrlValidator.isAnimePage(url)) {
+            if (animeListUrlValidator.isAnimePage(url)) {
                 val myAnimeListId: Int = animeProfileScrapper.getMyAnimeListId(url)
                 val name = animeProfileScrapper.getTitle(html)
                 val synopsis = animeProfileScrapper.getSynopsis(html)
@@ -57,20 +55,30 @@ class MyAnimeListCrawler @Autowired constructor(private var animeListUrlValidato
                 val animeEndDate = animeProfileScrapper.getAnimeEndDate(html)
 
                 val anime = AnimeDto(myAnimeListId, name, synopsis, url, episodesNumber, onAiring, animeReleaseDate, animeEndDate)
-                logger.debug("Anime to save: $anime")
+                logger.info("Anime to save: $anime")
 
                 try {
                     animeService.create(anime)
-                    logger.debug("Created!")
+                    logger.info("Created!")
                 } catch (e: EntityExistsException) {
-                    logger.debug("Entity already exist")
+                    logger.warn("Entity already exist")
                 }
 
             }
 
-            logger.debug("Text length: " + text.length)
-            logger.debug("Html length: " + html.length)
-            logger.debug("Number of outgoing links: " + links.size)
+            if (animeListUrlValidator.isAnimeImagesPage(url)) {
+                val myAnimeListId: Int = animeProfileScrapper.getMyAnimeListId(url)
+                val animeImagesUrl = animeProfileScrapper.getAnimeImages(html)
+
+                logger.info("Saving anime images with the myAnimeListId: $myAnimeListId")
+                logger.debug("Anime images's urls: $animeImagesUrl")
+
+                try {
+                    animeService.createAnimeImages(myAnimeListId, animeImagesUrl)
+                } catch (e: EntityExistsException) {
+                    logger.warn("Entity already exist")
+                }
+            }
         }
     }
 }
