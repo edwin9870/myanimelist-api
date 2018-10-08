@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.net.URL
 import java.time.Month
 
 @RunWith(SpringRunner::class)
@@ -14,7 +15,8 @@ import java.time.Month
 @ActiveProfiles("test")
 class AnimeProfileScrapperTest {
 
-    val htmlContent: String = AnimeProfileScrapperTest::class.java.getResource("/HTML/Fullmetal Alchemist_ Brotherhood - MyAnimeList.net.html").readText()
+    val animePageHtmlContent: String = AnimeProfileScrapperTest::class.java.getResource("/HTML/Fullmetal Alchemist_ Brotherhood - MyAnimeList.net.html").readText()
+    val animeImagesPageHtmlContent: String = AnimeProfileScrapperTest::class.java.getResource("/HTML/Gintama. (Gintama Season 5) - Pictures - MyAnimeList.net.html").readText()
     val animeTitle: String = "Fullmetal Alchemist: Brotherhood"
     val animeSynopsis: String = "\"In order for something to be obtained, something of equal value must be lost.\"\n" +
             "\n" +
@@ -27,25 +29,25 @@ class AnimeProfileScrapperTest {
 
     @Test
     fun getTitle_ValidAnimeTitle_MustGetTrue() {
-        val title = animeProfileScrapper.getTitle(htmlContent)
+        val title = animeProfileScrapper.getTitle(animePageHtmlContent)
         assertEquals("Invalid anime's title", animeTitle, title)
     }
 
     @Test
     fun getTitle_InvalidAnimeTitle_MustGetFalse() {
-        val title = animeProfileScrapper.getTitle(htmlContent)
+        val title = animeProfileScrapper.getTitle(animePageHtmlContent)
         assertNotEquals("Anime's title must be invalid", "xdfckjksa", title)
     }
 
     @Test
     fun getSynopsis_GetValidSummary_MustGetTrue() {
-        val synopsis = animeProfileScrapper.getSynopsis(htmlContent)
+        val synopsis = animeProfileScrapper.getSynopsis(animePageHtmlContent)
         assertEquals("Invalid anime's summary", animeSynopsis, synopsis)
     }
 
     @Test
     fun getEpisodesNumber_GetNumberOfEpisodes_GetNumberOfEpisodes() {
-        val episodesNumber = animeProfileScrapper.getEpisodesNumber(htmlContent)
+        val episodesNumber = animeProfileScrapper.getEpisodesNumber(animePageHtmlContent)
         assertTrue("The number of episode must be equal to 64", episodesNumber.toInt() == 64)
     }
 
@@ -57,7 +59,7 @@ class AnimeProfileScrapperTest {
 
     @Test
     fun isOnAiring_GetAiringAnimeStatus_GetTrue() {
-        val onAiring = animeProfileScrapper.isOnAiring(htmlContent)
+        val onAiring = animeProfileScrapper.isOnAiring(animePageHtmlContent)
         if (onAiring == null) {
             fail("Couldn't get on airing value")
             return
@@ -67,7 +69,7 @@ class AnimeProfileScrapperTest {
 
     @Test
     fun getAnimeReleaseDate_GetReleaseDateFromValidContent_GetReleaseDate() {
-        val releaseDate = animeProfileScrapper.getAnimeReleaseDate(htmlContent)
+        val releaseDate = animeProfileScrapper.getAnimeReleaseDate(animePageHtmlContent)
 
         assertNotNull("Release date must not be null", releaseDate)
         assertEquals("Release year is invalid", 2009, releaseDate?.year)
@@ -85,7 +87,7 @@ class AnimeProfileScrapperTest {
 
     @Test
     fun getAnimeEndDate_GetReleaseEndFromValidContent_GetEndDate() {
-        val releaseDate = animeProfileScrapper.getAnimeEndDate(htmlContent)
+        val releaseDate = animeProfileScrapper.getAnimeEndDate(animePageHtmlContent)
 
         assertNotNull("End date must not be null", releaseDate)
         assertEquals("End year is invalid", 2010, releaseDate?.year)
@@ -101,6 +103,19 @@ class AnimeProfileScrapperTest {
     @Test(expected = IllegalStateException::class)
     fun getMyAnimeListIdFromUrl_SendInvalidUrl_GetNull() {
         assertNull("Url is invalid, method must throw a exception", animeProfileScrapper.getMyAnimeListId("wskdjksjdksd"))
+    }
+
+    @Test
+    fun getAnimeImages_SendValidContent_GetImagesUrl() {
+        val animeImagesUrlList = animeProfileScrapper.getAnimeImages(animeImagesPageHtmlContent)
+        assertEquals("Images number must be 5",5, animeImagesUrlList.size)
+        assertTrue(animeImagesUrlList.stream().anyMatch { it == URL("https://myanimelist.cdn-dena.com/images/anime/11/82056l.jpg") })
+        assertTrue(animeImagesUrlList.stream().anyMatch { it == URL("https://myanimelist.cdn-dena.com/images/anime/13/83077l.jpg") })
+        assertTrue(animeImagesUrlList.stream().anyMatch { it == URL("https://myanimelist.cdn-dena.com/images/anime/9/83132l.jpg") })
+        assertTrue(animeImagesUrlList.stream().anyMatch { it == URL("https://myanimelist.cdn-dena.com/images/anime/13/83412l.jpg") })
+        assertTrue(animeImagesUrlList.stream().anyMatch { it == URL("https://myanimelist.cdn-dena.com/images/anime/3/83528l.jpg") })
+
+
     }
 
 }

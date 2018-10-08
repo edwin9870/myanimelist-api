@@ -7,9 +7,10 @@ import org.jsoup.nodes.Document
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.net.URL
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
+import java.util.stream.Collectors
 
 
 @Component
@@ -68,7 +69,6 @@ class AnimeProfileScrapper {
         logger.debug("animeReleaseDateString: $animeReleaseDateString")
 
 
-
         val animeReleaseDate = LocalDate.parse(animeReleaseDateString, myAnimeListDateFormatter)
         logger.debug("Release date: $animeReleaseDate")
         return animeReleaseDate
@@ -83,7 +83,6 @@ class AnimeProfileScrapper {
         logger.debug("animeEndDateString: $animeEndDateString")
 
 
-
         val animeReleaseDate = LocalDate.parse(animeEndDateString, myAnimeListDateFormatter)
         logger.debug("End date: $animeReleaseDate")
         return animeReleaseDate
@@ -92,10 +91,25 @@ class AnimeProfileScrapper {
     fun getMyAnimeListId(url: String): Int {
         val regexValue: String? = "^https:\\/\\/myanimelist.net\\/anime\\/(\\d+)".toRegex().find(url)?.groupValues?.get(1)
         logger.debug("regexValue: $regexValue")
-        if(regexValue == null) {
+        if (regexValue == null) {
             throw IllegalStateException("Invalid URL")
         }
         return regexValue.toInt()
+    }
+
+    fun getAnimeImages(htmlContent: String): List<URL> {
+        val document = Jsoup.parse(htmlContent)
+        val imagesHtmlContent = document.select("#content > table > tbody > tr  td[valign=top] > div.js-scrollfix-bottom-rel > table > tbody td[width] a")
+
+        val imagesUrl: List<URL> = imagesHtmlContent.stream()
+                .filter {
+                    it.select("img").size > 0
+                }
+                .map { it.attr("href") }
+                .map { URL(it) }
+                .collect(Collectors.toList())
+        logger.debug("Images urls: $imagesUrl")
+        return imagesUrl
     }
 
 }
